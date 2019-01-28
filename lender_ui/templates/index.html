@@ -1,0 +1,11 @@
+{% extends "app/layout.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block main %}
+  <div class="my-5 p-4">
+            <h1>Lender UIs</h1>
+            <p class="lead"><a class="btn btn-secondary btn-lg" href="{{ url_for('lender_admin.list') }}">Lender</a></p>
+
+  </div>
+{% endblock %}

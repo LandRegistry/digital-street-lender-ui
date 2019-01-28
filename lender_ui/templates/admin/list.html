@@ -1,0 +1,58 @@
+{% extends "app/theme/"+config['APP_USER']+".html" %}
+
+{% block content %}
+  <div class="row {{ config['APP_USER'] }}-content-text">
+    <div class="col-lg-10 m-auto">
+      {% if request.args.get('error_message') %}
+        <div class="alert alert-danger">
+          {{ request.args.get('error_message') }}
+        </div>
+      {% endif %}
+      <h1>Alerts</h1>
+      <table class="w-100 table-hover" id="tbl_list">
+        <tbody>
+        {% if titles %}
+          <thead>
+          <tr>
+            <th scope="col">Client</th>
+            <th scope="col">Address</th>
+            <th scope="col">Title number</th>
+            <th scope="col">Action required</th>
+          </tr>
+          </thead>
+          {% for title in titles %}
+            {% set title_obj = title['title'] %}
+            <tr>
+              <td scope="row">{{ title_obj['owner']['first_name'] }} {{ title_obj['owner']['last_name'] }}</td>
+              <td scope="row">
+                {{ title_obj['address']['house_name_number'] }}
+                {{ title_obj['address']['street'] }}
+                {{ title_obj['address']['town_city'] }}
+                {{ title_obj['address']['postcode'] }}
+              </td>
+              <td scope="row">
+                {% if title['title_number'] %}
+                  {{ title['title_number'] }}
+                {% endif %}
+              </td>
+              <td scope="row">
+                {% if title['status'] == "agree_to_discharge"  %}
+                  <a href="{{ url_for('lender_admin.charge_removal_consent',title_number=title['title_number']) }}">
+                    Agree to discharge mortgage
+                  </a>
+                {% elif title['status'] == "discharge_consented" %}
+                    Discharge approved
+                {% endif %}
+              </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+            <tr>
+              <td>No records to display</td>
+            </tr>
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
