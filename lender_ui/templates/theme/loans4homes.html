@@ -1,29 +1,25 @@
 {% extends "app/layout.html" %}
 
 {% block header %}
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark loans4homes-navbar">
-    <div class="container-fluid">
-      <a class="mb-0 h3" href="/">Loans4Homes</a>
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark loans4homes-navbar">    
+      <a class="navbar-brand" href="/">Loans4Homes</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
               aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="mainNavbar">
-        {% if session['user_name'] %}
+      {% if session['user_name'] %}
+        <div class="navbar-collapse collapse" id="mainNavbar">
           <ul class="navbar-nav ml-auto  flex-column text-right">
             <li class="nav-item">
-              You are logged in as:
-            </li>
-            <li class="nav-item">
+              You are logged in as:            
               {{ session['user_name'] }}
             </li>
             <li class="nav-item">
               <u><a class="nav-link p-0" href="{{ url_for('login.logout') }}">Logout</a></u>
             </li>
           </ul>
-        {% endif %}
-      </div>
-    </div>
+        </div>
+      {% endif %}      
   </nav>
 {% endblock %}
 
@@ -53,7 +49,7 @@
           </div>
         </nav>
       {% endblock %}
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-5">
+      <main role="main" class="col-md-10 ml-sm-auto px-4">
         {% block beforeContent %}
         {% endblock %}
         {% block content %}{% endblock %}

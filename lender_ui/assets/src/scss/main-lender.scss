@@ -3,154 +3,161 @@
 @import 'bootstrap/scss/bootstrap';
 
 .navbar-dark .navbar-nav .nav-link {
-	  color: white;
+    color: white;
 }
 
 /* unvisited link */
 #nav_sidebar > div > ul > li > a:link  {
-    color: #220c10;
+  color: #220c10;
 }
 
 #nav_sidebar > div > ul > li  > a:visited {
-    color: #220c10;
+  color: #220c10;
 }
 
 /* mouse over link */
 #nav_sidebar > div > ul > li  > a:hover {
-    background-color: #fff;
+  background-color: #fff;
+}
+
+.sidebar-current {
+  background-color: #fff;
 }
 
 /* selected link */
 #nav_sidebar  li > a:active {
-    color: #220c10;
+  color: #220c10;
 }
 
 html, body {
-    height: 100%;
+  height: 100%;
 }
 
 .row-select{
-    background-color:#d2f4eb
+  background-color:#d2f4eb
 }
 
 #header_nav_item > li, #header_nav_item > li > a  {
-    color: #fff;
+  color: #fff;
 }
 
 [role="main"] {
-    padding-top: 48px; /* Space for fixed navbar */
+  padding-top: 48px; /* Space for fixed navbar */
 }
 
 /* xs < 768 */
 @media screen and (max-width: 767px) {
-    h1 {
-        font-size: 7.5vw;
-    }
+  h1 {
+      font-size: 7.5vw;
+  }
 
-    .h3 {
-        font-size: 5.5vw;
-    }
+  .h3 {
+      font-size: 5.5vw;
+  }
 }
 
 /* sm , md and lg*/
 @media screen and (min-width: 768px) {
-    h1 {
-        font-size: 3vw;
-    }
-    .h3 {
-        font-size: 2.25vw;
-    }
+  h1 {
+      font-size: 3vw;
+  }
+  .h3 {
+      font-size: 2.25vw;
+  }
 }
 
 @media screen and (max-width: 400px) {
-    .small_font {
-        font-size: 3vw;
-    }
+  .small_font {
+      font-size: 3vw;
+  }
 }
 
 .loans4homes-container{
-    background-color:#b8b7b7;
-    text-align:center;
-    color:#fff;
-    margin:20px auto
+  background-color:#b8b7b7;
+  text-align:center;
+  color:#fff;
+  margin: 20px auto; 
+  padding: 20px;
 }
 
 .gringott-container{
-    background-color:#e8f8fa;
-    text-align:center;
-    color:#fff;
-    margin:20px auto
+  background-color:#e8f8fa;
+  text-align:center;
+  color:#fff;
+  margin: 20px auto;
+  padding: 20px;
 }
 
 .loans4homes-navbar,.loans4homes-button{
-    background-color: #713e5a;
-    color:#b8b7b7;
+  background-color: #713e5a;
+  color:#b8b7b7;
+  margin-bottom: 10px;    
 }
 
 .gringott-navbar,.gringott-button{
-    background-color: #003663;
-    color:#e8f8fa;
+  background-color: #003663;
+  color:#e8f8fa;
+  margin-bottom: 10px;
 }
 
 .loans4homes-content-text{
-    color:#220c10
+  color:#220c10
 }
 
 .gringott-content-text{
-    color:#003663
+  color:#003663
 }
 
 .colour-inherit{
-    color:inherit
+  color:inherit
 }
 
 .nounderline{
-    text-decoration: none !important
- }
+  text-decoration: none !important
+}
 
 .w-15{
-    max-width:15%
+  max-width:15%
 }
 
 .loans4homes-sidebar{
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 90px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-  background-color:#b8b7b7;
+position: fixed;
+top: 0;
+bottom: 0;
+left: 0;
+z-index: 100; /* Behind the navbar */
+padding: 70px 0 0; /* Height of navbar */
+box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+background-color:#b8b7b7;
 }
 
 .gringott-sidebar{
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 90px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-  background-color:#e8f8fa;
+position: fixed;  
+top: 0;
+bottom: 0;
+left: 0;
+z-index: 100; /* Behind the navbar */
+padding: 70px 0 0; /* Height of navbar */
+box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+background-color:#e8f8fa;
 }
 
 .sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 90px);
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+position: relative;
+top: 0;
+height: calc(100vh - 90px);
+padding-top: .5rem;
+overflow-x: hidden;
+overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
 .font-120{
-  font-size:1.20em;
+font-size:1.20em;
 }
 
-
 .vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one        */
-  display: flex;
-  align-items: center;
+min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+min-height: 100vh; /* These two lines are counted as one        */
+display: flex;
+align-items: center;
 }

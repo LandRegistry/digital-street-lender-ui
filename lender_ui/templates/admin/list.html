@@ -1,7 +1,7 @@
 {% extends "app/theme/"+config['APP_USER']+".html" %}
 
 {% block content %}
-  <div class="row {{ config['APP_USER'] }}-content-text">
+  <div class="m-auto pt-4 {{ config['APP_USER'] }}-content-text">
     <div class="col-lg-10 m-auto">
       {% if request.args.get('error_message') %}
         <div class="alert alert-danger">
@@ -9,7 +9,7 @@
         </div>
       {% endif %}
       <h1>Alerts</h1>
-      <table class="w-100 table-hover" id="tbl_list">
+      <table class="table table-hover" id="tbl_list">
         <tbody>
         {% if titles %}
           <thead>
@@ -17,17 +17,17 @@
             <th scope="col">Client</th>
             <th scope="col">Address</th>
             <th scope="col">Title number</th>
-            <th scope="col">Action required</th>
+            <th scope="col">Status</th>
           </tr>
           </thead>
           {% for title in titles %}
             {% set title_obj = title['title'] %}
             <tr>
               <td scope="row">{{ title_obj['owner']['first_name'] }} {{ title_obj['owner']['last_name'] }}</td>
-              <td scope="row">
-                {{ title_obj['address']['house_name_number'] }}
-                {{ title_obj['address']['street'] }}
-                {{ title_obj['address']['town_city'] }}
+              <td>
+                {{ title_obj['address']['house_name_number'] }}, <br>
+                {{ title_obj['address']['street'] }}, <br>
+                {{ title_obj['address']['town_city'] }}, <br>
                 {{ title_obj['address']['postcode'] }}
               </td>
               <td scope="row">
@@ -35,13 +35,19 @@
                   {{ title['title_number'] }}
                 {% endif %}
               </td>
-              <td scope="row">
-                {% if title['status'] == "agree_to_discharge"  %}
+              <td>
+                {% if title['status_display'] == "agree_to_discharge"  %}
                   <a href="{{ url_for('lender_admin.charge_removal_consent',title_number=title['title_number']) }}">
                     Agree to discharge mortgage
                   </a>
-                {% elif title['status'] == "discharge_consented" %}
+                {% elif title['status_display'] == "discharge_consented" %}
                     Discharge approved
+                {% elif title['status_display'] == "new_charge_added" %}
+                    New charge added
+                {% elif title['status_display'] == "discharge_not_proposed" %}
+                    Waiting for discharge request
+                {% else %}
+                    New charge pending
                 {% endif %}
               </td>
           </tr>

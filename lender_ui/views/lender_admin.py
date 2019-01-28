@@ -16,15 +16,53 @@ def list():
                               headers={'Accept': 'application/json'})
     if titles_res.status_code == 200:
         titles = titles_res.json()
-
     for title in titles:
-        if title['proposed_title']:
-            title['status'] = 'agree_to_discharge'
-            if title['proposed_title']['restrictions']:
-                signed_actions = [d['signed_actions'] for d in title['proposed_title']['restrictions']]
-                if signed_actions:
-                    if any(value == "remove" for value in signed_actions):
-                        title['status'] = 'discharge_consented'
+        if title['status'] == 'land_title_issued':
+            title['status_display'] = 'discharge_not_proposed'
+        else:
+            title['status_display'] = None
+            # compute status column value
+            if title['proposed_title']:
+                if title['proposed_title']['restrictions']:
+                    for val in title['proposed_title']['restrictions']:
+                        signed_actions = val['signed_actions']
+                    if signed_actions is not None:
+                        if signed_actions == "remove":
+                            title['status_display'] = 'discharge_consented'
+                    else:
+                        title['status_display'] = 'agree_to_discharge'
+
+        # check if new charge has been added
+        # get current node lender object
+        lender_res = requests.get(current_app.config['LENDER_API_URL'] + '/me',
+                                  headers={'Accept': 'application/json'})
+        if lender_res.status_code == 200:
+            lender = lender_res.json()
+            lender = lender['me']['x500']
+            current_lender = {
+                "organisation": lender['organisation'],
+                "locality": lender['locality'],
+                "country": lender['country'],
+                "state": lender['state'],
+                "organisational_unit": lender['organisational_unit'],
+                "common_name": lender['common_name']
+            }
+        # if new charge is added then proposed_title would be empty
+        if not title['proposed_title']:
+            proposed_charges = title['title']['charges']
+            proposed_restrictions = title['title']['restrictions']
+            if proposed_charges:
+                for charge in proposed_charges:
+                    # check if current node lender equals lender in the charge
+                    if charge['lender'] == current_lender:
+                        title['status_display'] = "new_charge_added"
+                        break
+            # else check if logged in lender equals lender in the charge of type restriction
+            else:
+                for restriction in proposed_restrictions:
+                    if "charge" in restriction and restriction['charge']['lender'] == current_lender:
+                        title['status_display'] = "new_charge_added"
+                        break
 
     return render_template('app/admin/list.html', titles=titles)
 
@@ -49,13 +87,12 @@ def charge_removal_consent(title_number):
         title_restrictions = title_restriction_res.json()
 
     placeholders = [
-
-                      {"placeholder_str": "**RT**", "field": "restriction_type"},
-                      {"placeholder_str": "**RD**", "field": "date"},
-                      {"placeholder_str": "**RA**", "field": "charge/amount"},
-                      {"placeholder_str": "**RO**", "field": "lender"},
-                      {"placeholder_str": "*CD*", "field": "date"},
-                      {"placeholder_str": "*CP*", "field": "lender"}
+        {"placeholder_str": "**RT**", "field": "restriction_type"},
+        {"placeholder_str": "**RD**", "field": "date"},
+        {"placeholder_str": "**RA**", "field": "charge/amount"},
+        {"placeholder_str": "**RO**", "field": "lender"},
+        {"placeholder_str": "*CD*", "field": "date"},
+        {"placeholder_str": "*CP*", "field": "lender"}
     ]
 
     # loop over titles to replace placeholders in the restriction text
@@ -63,11 +100,9 @@ def charge_removal_consent(title_number):
         # hard code seller's lender in the restriction object
         title_restriction['lender'] = 'Loans4homes'
 
-        # change date format if exists
-        if 'date' in title_restriction:
-            # assign the format the input date is in
-            date_obj = datetime.strptime(title_restriction['date'], '%Y-%m-%dT%H:%M:%S')
-            title_restriction['date'] = datetime.strftime(date_obj, '%d %B %Y')
+        # change date format
+        date_obj = datetime.strptime(title_restriction['charge']['date'], '%Y-%m-%dT%H:%M:%S.%f')
+        title_restriction['date'] = datetime.strftime(date_obj, '%d %B %Y')
 
         # change amount format if exists
         if 'charge' in title_restriction:

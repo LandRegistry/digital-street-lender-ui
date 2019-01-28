@@ -1,23 +1,25 @@
 {% extends "app/layout.html" %}
 
 {% block header %}
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark gringott-navbar">
-    <div class="container-fluid">
-      <a class="mb-0 h3" href="/">Gringott's Bank</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
-              aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="mainNavbar">
-          <ul class="navbar-nav ml-auto  flex-column text-right">
-            <li class="nav-item">
-              You are logged in as:<br>
-              Jenny Roberts<br>
-              <u><a class="nav-link p-0" href="  ">Logout</a></u>
-            </li>
-          </ul>
-      </div>
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark gringott-navbar">    
+    <a class="navbar-brand" href="/">Gringott's Bank</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
+            aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% if session['user_name'] %}
+    <div class="navbar-collapse collapse" id="mainNavbar">
+      <ul class="navbar-nav ml-auto  flex-column text-right">
+        <li class="nav-item">
+          You are logged in as:            
+          {{ session['user_name'] }}
+        </li>
+        <li class="nav-item">
+          <u><a class="nav-link p-0" href="{{ url_for('login.logout') }}">Logout</a></u>
+        </li>
+      </ul>
     </div>
+  {% endif %}      
   </nav>
 {% endblock %}
 
@@ -30,33 +32,24 @@
             <ul class="nav flex-column text-light">
               <li class="nav-item">
                 <a class="nav-link active" href="#">
-                  <span data-feather="home"></span>
-                  Home <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  Cases {% if admin_notify and admin_notify > 0 %}<i class="fas fa-bell fa-fw fa-lg"></i>{% endif %}
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
                   Inbox
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link sidebar-current" href="#">
+                  Alerts {% if admin_notify and admin_notify > 0 %}<i class="fas fa-bell fa-fw fa-lg"></i>{% endif %}
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  Support
+                  Guidance
                 </a>
               </li>
             </ul>
           </div>
         </nav>
       {% endblock %}
-      <main role="main" class="col px-4 mt-5 {{ mainClasses }}">
+      <main role="main" class="col-md-10 ml-sm-auto px-4">
         {% block beforeContent %}
         {% endblock %}
         {% block content %}{% endblock %}
