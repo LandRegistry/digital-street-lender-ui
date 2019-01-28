@@ -1,0 +1,44 @@
+{% extends "app/theme/"+config['APP_USER']+".html" %}
+
+
+{% block main %}
+  <div class="vertical-center">
+    <div class="container">
+      {% if error_message %}
+        <div class="row">
+          <div class="col-7  mx-auto pt-1">
+            <div class="alert alert-danger">
+              {{ error_message }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      <div class="row">
+        <main role="main" class="col-lg-7 ml-sm-auto px-4 {{ mainClasses }} {{ config['APP_USER'] }}-container {{ config['APP_USER'] }}-content-text">
+          <h1>Login</h1>
+          <div class="container-fluid h-100">
+            <div class="row justify-content-center align-items-center">
+              <div class="col-lg-6">
+                <form action="{{ url_for('login.user_login') }}" method="post">
+                  <div class="form-group text-left">
+                    <label for="email">Email:</label><br>
+                    <input type="text" name="email" id="email" class="form-control" required="required">
+                  </div>
+                  <div class="form-group text-left">
+                    <label for="password">Password:</label><br>
+                    <input type="password" name="password" id="password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="hidden" name="redirect_url" value="{% if redirect_url %}{{ redirect_url }}{% else %}{{ request.args.get('next', '') }}{% endif %}"/>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <button type="submit" class="btn font-weight-bold {{ config['APP_USER'] }}-button">Login</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+{% endblock %}
