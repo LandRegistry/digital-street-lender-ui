@@ -12,7 +12,7 @@
     </div>
   {% endif %}  
   <div class="container-fluid">
-    <form name="remove_charge_form" action="{{url_for('lender_admin.charge_removal_consent',title_number=title_number)}}">
+    <form name="remove_charge_form" method="post" action="{{url_for('lender_admin.charge_removal_consent',title_number=title_number)}}">
       <div class="row">
         <div class="col-lg-7 p-4-mt5 {{ config['APP_USER'] }}-container {{ config['APP_USER'] }}-content-text">
           <h3>Agree to discharge of charge and charge restriction</h3>
