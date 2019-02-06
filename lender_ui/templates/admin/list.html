@@ -8,6 +8,11 @@
           {{ request.args.get('error_message') }}
         </div>
       {% endif %}
+      {% if error_message %}
+        <div class="alert alert-danger">
+          {{ error_message }}
+        </div>
+      {% endif %}
       <h1>Alerts</h1>
       <table class="table table-hover" id="tbl_list">
         <tbody>

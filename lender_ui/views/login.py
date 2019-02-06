@@ -19,11 +19,17 @@ def login_required(f):
 @login.route("/login", methods=['GET', 'POST'])
 def user_login():
     if request.method == 'POST':
-        user_details_res = requests.get(
-            current_app.config['LENDER_MANAGEMENT_API_URL'] + '/users', params={
-                "email_address": str(request.form.get('email').lower())
-            },
-            headers={'Accept': 'application/json'})
+        try:
+            user_details_res = requests.get(
+                current_app.config['LENDER_MANAGEMENT_API_URL'] + '/users', params={
+                    "email_address": str(request.form.get('email').lower())
+                },
+                headers={'Accept': 'application/json'}
+            )
+        except requests.exceptions.ConnectionError:
+            redirect_url = request.form.get('redirect_url')
+            return render_template('app/login.html', redirect_url=redirect_url, error_message="Cannot connect to Lender Management API.")
+
         if user_details_res.status_code == 200:
             user_details = user_details_res.json()
             if user_details:
@@ -37,6 +43,9 @@ def user_login():
                 # lost so pass it back to the login form in a new variable
                 redirect_url = request.form.get('redirect_url')
                 return render_template('app/login.html', redirect_url=redirect_url, error_message="User not found.")
+        else:
+            redirect_url = request.form.get('redirect_url')
+            return render_template('app/login.html', redirect_url=redirect_url, error_message=user_details_res.text)
 
     if request.method == 'GET':
         # if user already logged in then redirect to index

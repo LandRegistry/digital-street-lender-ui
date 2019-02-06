@@ -11,39 +11,61 @@
       </div>
     </div>
   {% endif %}  
-  <div class="container-fluid">
-    <form name="remove_charge_form" method="post" action="{{url_for('lender_admin.charge_removal_consent',title_number=title_number)}}">
-      <div class="row">
-        <div class="col-lg-7 p-4-mt5 {{ config['APP_USER'] }}-container {{ config['APP_USER'] }}-content-text">
-          <h3>Agree to discharge of charge and charge restriction</h3>
-          <p class="lead">
-              As the seller's offer for their property satisfies their redemption figure you can consent to the
-              discharge of your charge and charge restriction. By agreeing, you're allowing HMLR to remove these
-              from the register on point of completion.
-          </p>        
-          {% if title_restrictions %}
-            <h5>Charge(s)</h5>                  
-            {% for title_restriction in title_restrictions %}
+  <div class="container-fluid mt-5">
+    <div class="row">
+      <div class="col-lg-8  {{ config['APP_USER'] }}-container {{ config['APP_USER'] }}-content-text"">
+        <form name="remove_charge_form" method="post" action="{{url_for('lender_admin.charge_removal_consent',title_number=title_number)}}">
+          <div class="row">
+            <div class="col p-4-mt5">
+              <h3>Agree to discharge of charge and charge restriction</h3>
               <p>
-                <strong>Date: </strong>{{ title_restriction['date'] }}<br>
-                <strong>Amount: </strong>{{ title_restriction['charge']['amount'] }}
+                  As the seller's offer for their property satisfies their redemption figure you can consent to the
+                  discharge of your charge and charge restriction. By agreeing, you're allowing HMLR to remove these
+                  from the register on point of completion.
               </p>
-            {% endfor %}
-          {% endif %}
-          {% if title_restrictions %}
-            <h5>Restriction(s)</h5>
-            {% for title_restriction in title_restrictions %}            
-              <p>{{ title_restriction['restriction_text'] }}</p>                
-            {% endfor %}
-          {% endif %}
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <button type="submit" class="btn {{ config['APP_USER'] }}-button">
-            Agree to discharge
-          </button>
-          <br>        
-          <u><a href="#" class="colour-inherit">I don't agree with this discharge</a></u>          
-        </div>
+            </div>
+          </div>
+          <div class="row">
+             <div class="col">
+              {% if title_address %}
+                <h5>Address</h5>
+                  <p>
+                    {{ title_address['house_name_number'] }} {{ title_address['street'] }}<br>
+                    {{ title_address['county'] }}<br>
+                    {{ title_address['postcode'] }}
+                  </p>
+              {% endif %}
+            </div>
+            <div class="col">
+              {% if title_restrictions %}
+                <h5>Charge(s)</h5>
+                {% for title_restriction in title_restrictions %}
+                  <p>
+                    <strong>Date: </strong>{{ title_restriction['date'] }}<br>
+                    <strong>Amount: </strong>{{ title_restriction['charge']['amount'] }}
+                  </p>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h5>Restriction(s)</h5>
+              {% if title_restrictions %}
+                {% for title_restriction in title_restrictions %}
+                  <p>{{ title_restriction['restriction_text'] }}</p>
+                {% endfor %}
+              {% endif %}
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="btn {{ config['APP_USER'] }}-button">
+                Agree to discharge
+              </button>
+              <br>
+              <u><a href="#" class="colour-inherit">I don't agree with this discharge</a></u>
+            </div>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 {% endblock %}
