@@ -103,14 +103,16 @@ def charge_removal_consent(title_number):
     # CBCR is of type charge and ORES is type generic
     url = current_app.config['LENDER_API_URL'] + '/titles/' + title_number + '/restrictions'
     title_restriction_res = requests.get(url, params={'type': 'CBCR'}, headers={'Accept': 'application/json'})
+    error_message = None
     if not title_restriction_res.status_code == 200:
         title_restrictions = None
+
         if title_restriction_res.text:
             error_message = title_restriction_res.text
         else:
             error_message = "Error: Lender API failed. Could not return a response."
     else:
-        title_restriction = title_restriction_res.json()
+        title_restrictions = title_restriction_res.json()
 
         placeholders = [
             {"placeholder_str": "**RT**", "field": "restriction_type"},
@@ -123,8 +125,7 @@ def charge_removal_consent(title_number):
 
         # loop over titles to replace placeholders in the restriction text
         for title_restriction in title_restrictions:
-            # hard code seller's lender in the restriction object
-            title_restriction['lender'] = 'Loans4homes'
+            title_restriction['lender'] = title_restriction['consenting_party']['organisation']
 
             # change date format
             date_obj = datetime.strptime(title_restriction['charge']['date'], '%Y-%m-%dT%H:%M:%S.%f')
