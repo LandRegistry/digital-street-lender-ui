@@ -28,7 +28,10 @@ def user_login():
             )
         except requests.exceptions.ConnectionError:
             redirect_url = request.form.get('redirect_url')
-            return render_template('app/login.html', redirect_url=redirect_url, error_message="Cannot connect to Lender Management API.")
+            return render_template(
+                'app/login.html',
+                redirect_url=redirect_url,
+                error_message="Cannot connect to Lender Management API.")
 
         if user_details_res.status_code == 200:
             user_details = user_details_res.json()

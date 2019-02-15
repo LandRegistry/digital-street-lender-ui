@@ -1,10 +1,12 @@
-from unittest import mock
-import logging
 import json
-from freezegun import freeze_time
-from lender_ui.main import app
-from lender_ui.custom_extensions.enhanced_logging.main import EnhancedLogging
+import logging
+from unittest import mock
+
 from werkzeug import Headers
+
+from freezegun import freeze_time
+from lender_ui.custom_extensions.enhanced_logging.main import EnhancedLogging
+from lender_ui.main import app
 
 logger = logging.getLogger('lender-ui')
 client = app.test_client()
@@ -18,7 +20,7 @@ def parse_log_output(capmanager):
     # Try and parse it as json
     try:
         return json.loads(out)
-    except ValueError as e:
+    except ValueError:
         # If we can't parse it, print a useful err to allow people to debug it.
         # The default ValueError is particularly unhelpful in actually diagnosing the problem
         # Re-print the stdout and stderr because capturing it above suppresses it

@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, url_for, request, redirect, current_app, session
-import requests
-from lender_ui.views.login import login_required
 from datetime import datetime
+
+import requests
+from flask import (Blueprint, current_app, redirect, render_template, request,
+                   url_for)
+
 from babel import numbers
-import json
+from lender_ui.views.login import login_required
 
 # This is the blueprint object that gets registered into the app in blueprints.py.
 admin = Blueprint('lender_admin', __name__)
@@ -133,8 +135,9 @@ def charge_removal_consent(title_number):
 
             # change amount format if exists
             if 'charge' in title_restriction:
-                title_restriction['charge']['amount'] = numbers.format_currency(title_restriction['charge']['amount'],
-                                                                                title_restriction['charge']['amount_currency_code'])
+                title_restriction['charge']['amount'] = numbers.format_currency(
+                    title_restriction['charge']['amount'],
+                    title_restriction['charge']['amount_currency_code'])
 
             # loop over placeholders to replace them
             for placeholder in placeholders:

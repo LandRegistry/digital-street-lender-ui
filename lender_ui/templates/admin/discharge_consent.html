@@ -26,32 +26,40 @@
             </div>
           </div>
           <div class="row">
-             <div class="col">
-              {% if title_address %}
+            {% if title_address %}
+              <div class="col">
                 <h5>Address</h5>
                   <p>
                     {{ title_address['house_name_number'] }} {{ title_address['street'] }}<br>
                     {{ title_address['county'] }}<br>
                     {{ title_address['postcode'] }}
                   </p>
-              {% endif %}
-            </div>
-            <div class="col">
-              {% if title_restrictions %}
-                <h5>Charge(s)</h5>
+              </div>
+            {% endif %}
+            {% if title_restrictions %}
+              <div class="col">
+                {% if title_restrictions|length > 1 %}
+                  <h5>Charges</h5>
+                {% else %}
+                  <h5>Charge</h5>
+                {% endif %}
                 {% for title_restriction in title_restrictions %}
                   <p>
                     <strong>Date: </strong>{{ title_restriction['date'] }}<br>
                     <strong>Amount: </strong>{{ title_restriction['charge']['amount'] }}
                   </p>
                 {% endfor %}
-              {% endif %}
-            </div>
+              </div>
+            {% endif %}
           </div>
           <div class="row">
             <div class="col">
-              <h5>Restriction(s)</h5>
               {% if title_restrictions %}
+                {% if title_restrictions|length > 1 %}
+                  <h5>Restrictions</h5>
+                {% else %}
+                  <h5>Restriction</h5>
+                {% endif %}
                 {% for title_restriction in title_restrictions %}
                   <p>{{ title_restriction['restriction_text'] }}</p>
                 {% endfor %}

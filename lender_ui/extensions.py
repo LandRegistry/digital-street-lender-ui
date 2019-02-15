@@ -1,10 +1,14 @@
 from lender_ui import config
-from lender_ui.custom_extensions.cachebust_static_assets.main import CachebustStaticAssets
-from lender_ui.custom_extensions.enhanced_logging.main import EnhancedLogging
-from lender_ui.custom_extensions.gzip_static_assets.main import GzipStaticAssets
-from lender_ui.custom_extensions.security_headers.main import SecurityHeaders
-from lender_ui.custom_extensions.jinja_markdown_filter.main import JinjaMarkdownFilter
+from lender_ui.custom_extensions.cachebust_static_assets.main import \
+    CachebustStaticAssets
 from lender_ui.custom_extensions.csrf.main import CSRF
+from lender_ui.custom_extensions.enhanced_logging.main import EnhancedLogging
+from lender_ui.custom_extensions.gzip_static_assets.main import \
+    GzipStaticAssets
+from lender_ui.custom_extensions.jinja_markdown_filter.main import \
+    JinjaMarkdownFilter
+from lender_ui.custom_extensions.security_headers.main import SecurityHeaders
+
 # from lender_ui.custom_extensions.content_security_policy.main import ContentSecurityPolicy
 
 
@@ -16,6 +20,7 @@ security_headers = SecurityHeaders()
 jinja_markdown_filter = JinjaMarkdownFilter()
 csrf = CSRF()
 # content_security_policy = ContentSecurityPolicy()
+
 
 def register_extensions(app):
     """Adds any previously created extension objects into the app, and does any further setup they need."""
